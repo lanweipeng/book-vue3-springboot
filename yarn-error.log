@@ -1,0 +1,29 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn add jsencrypt
+
+PATH: 
+  /Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Users/lanweipeng/.rvm/bin:/Users/lanweipeng/.rvm/bin
+
+Yarn version: 
+  1.22.0
+
+Node version: 
+  20.9.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.npmjs.org/jsencrypt: ETIMEDOUT
+      at Timeout._onTimeout (/usr/local/lib/node_modules/yarn/lib/cli.js:141387:19)
+      at listOnTimeout (node:internal/timers:573:17)
+      at process.processTimers (node:internal/timers:514:7)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

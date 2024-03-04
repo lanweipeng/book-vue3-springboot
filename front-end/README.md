@@ -50,3 +50,7 @@ yarn test:unit
 ```sh
 yarn lint
 ```
+1超级管理员2普通角色3管理员
+账户：ry 密码：123456  普通用户
+账户：1234555 密码：admin123 管理员
+账户 admin 密码 admin123 超级管理员

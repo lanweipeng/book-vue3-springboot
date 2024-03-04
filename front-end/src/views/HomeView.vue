@@ -1,9 +1,20 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="home">
+    <Header />
+    <main>
+
+    </main>
+  </div>
 </template>
+<script setup lang="ts">
+import Header from './components/Header.vue'
+</script>
+<style scoped lang="scss">
+@import '@/scss/var.scss';
+@import '@/scss/mixin.scss';
+
+.home {
+
+
+}</style>

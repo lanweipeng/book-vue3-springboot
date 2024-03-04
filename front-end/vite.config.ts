@@ -20,5 +20,19 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  define: {
+    'process.env': {
+      VUE_APP_BASE_API : '/'
+    }
+  },
+  server:{
+    proxy:{
+      '/api':{
+        target:'http://118.31.22.111:8080',
+        changeOrigin:true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      }
+    }
   }
 })
