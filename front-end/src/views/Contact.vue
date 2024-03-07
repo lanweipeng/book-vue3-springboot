@@ -22,12 +22,19 @@
 <script setup lang="ts">
 import Header from './components/Header.vue'
 import {contactAdminApi} from '@/api/contact'
+import { ElMessage } from 'element-plus';
 import {reactive,ref} from 'vue'
 
  const message=ref()
 const onSubmit=()=>{
   contactAdminApi({
-    message
+    message:message.value
+  }).then(()=>{
+    message.value=''
+    ElMessage({
+    message: '发送成功',
+    type: 'success',
+  })
   })
 }
 </script>

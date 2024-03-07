@@ -28,7 +28,7 @@
           <el-option v-for="item in OPTIONS" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
-      <!-- <el-checkbox v-model="userInfo.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox> -->
+      <el-checkbox v-model="userInfo.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button :loading="loading" size="medium" type="primary" style="width:100%;"
           @click.native.prevent="handleLogin">
@@ -46,7 +46,8 @@
 <script>
 import { getCodeImg, loginApi } from "@/api/login";
 import Cookies from "js-cookie";
-import { encrypt, decrypt } from '@/utils/jsencrypt'
+import { encrypt, decrypt } from '@/utils/jsencrypt';
+import {useRouter}from 'vue-router'
 const OPTIONS=[
   {
     value:2,
@@ -65,8 +66,14 @@ export default {
   name: "Login",
   setup(){
     // const options = useRef([]);
+    const router = useRouter()
+    function goTo(path){
+      console.log(path)
+      router.push(path)
+    }
     return {
       OPTIONS,
+      goTo,
     }
   },
   data() {
@@ -88,7 +95,7 @@ export default {
           { required: true, trigger: "blur", message: "请输入您的密码" }
         ],
         code: [{ required: true, trigger: "change", message: "请输入验证码" }],
-        role: [{ required: true, trigger: "change", message: "请选择身份" }]
+        roleId: [{ required: true, trigger: "change", message: "请选择身份" }]
       },
       loading: false,
       // 验证码开关
@@ -135,6 +142,36 @@ export default {
         if (valid) {
           this.loading = true;
           loginApi(this.userInfo)
+          .then(res=>{
+            // localStorage.setItem('token',res.token)
+            if(this.userInfo.rememberMe){
+              Cookies.set('token',res.token,{expires:15})
+            }else{
+              Cookies.set('token',res.token)
+            }
+            
+            localStorage.setItem('roleId',this.userInfo.roleId)
+            const fromPath = sessionStorage.getItem('fromPath');
+            const roleId = localStorage.getItem('roleId');
+            const obj={
+              1:'/admin',
+              2:'/',
+              3:'/admin',
+            }
+            let _fromPath=fromPath;
+            if(fromPath==='/login'||!fromPath){
+              _fromPath =obj[roleId]
+            }
+            console.log(_fromPath)
+            this.goTo(_fromPath)
+          })
+          .catch(err=>{
+            console.log(err)
+            if(err.code===100001||err.code===100002){
+              this.userInfo.code=null
+              this.getCode();
+            }
+          })
           .finally(()=>{
             this.loading=false
           })

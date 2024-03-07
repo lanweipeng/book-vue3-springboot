@@ -1,21 +1,26 @@
 <template>
    <div class="header">
       <div class="left">
-        <h1 class="title">图书管理系统</h1>
+        <h1 class="header-title">图书管理系统</h1>
       <nav>
         <ul class="menu">
-          <li v-for="item in menus" :key="item.name" @click="() => handleClick(item.path)">{{ item.name }}</li>
+          <li v-for="item in menus" :key="item.name" @click="() => handleClick(item)">
+          <div :class="{'is-active':isActive===item.name}">{{ item.name }}</div>
+          </li>
 
         </ul>
       </nav>
       </div>
       <div class="right">
-        退出
+        
+        <div class="logout c-p" @click="logout">退出</div>
       </div>
     </div>
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie'
+import {ref} from 'vue'
 const menus = [
   {
     name: '图书推荐',
@@ -43,9 +48,19 @@ const menus = [
   },
 ]
 const router = useRouter()
-const handleClick = (path) => {
-  router.push(path)
+const isActive = ref();
+const handleClick = (item) => {
+  isActive.value=item.name
+  router.push(item.path)
 }
+const logout=()=>{
+  router.replace('/login')
+  localStorage.clear('roleId')
+  Cookies.clear('token')
+}
+
+
+
 </script>
 <style scoped lang="scss">
 @import '@/scss/var.scss';
@@ -64,7 +79,7 @@ const handleClick = (path) => {
       align-items: center;
     }
 
-    .title {
+    .header-title {
       margin-right: 100px;
     }
 
@@ -74,6 +89,9 @@ const handleClick = (path) => {
       li {
         margin-right: 20px;
         cursor: pointer;
+        .is-active{
+          border-bottom: 1px solid white;
+        }
       }
     }
     .right{
