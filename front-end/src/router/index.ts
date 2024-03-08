@@ -23,9 +23,6 @@ const router = createRouter({
         if(localStorage.getItem('roleId')===SUPER_ADMIN_ROLEID) return '/admin/admin-manage'
         if(localStorage.getItem('roleId')===ADMIN_ROLEID) return '/admin/reader-manage'
       },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/Admin.vue'),
       children:[
         {
@@ -39,10 +36,35 @@ const router = createRouter({
           component: () => import('../views/admin/ReaderManage.vue'),
         },
         {
+          path: 'reader-detail',
+          name: 'reader-detail',
+          component: () => import('../views/admin/ReaderDetail.vue'),
+        },
+        {
           path: 'college-manage',
           name: 'college-manage',
           component: () => import('../views/admin/CollegeManage.vue'),
-        }
+        },
+        {
+          path: 'message-manage',
+          name: 'message-manage',
+          component: () => import('../views/admin/MessageManage.vue'),
+        },
+        {
+          path: 'message-detail/:id',
+          name: 'message-detail',
+          component: () => import('../views/admin/MessageDetail.vue'),
+        },
+        {
+          path: 'class-manage',
+          name: 'class-manage',
+          component: () => import('../views/admin/ClassManage.vue'),
+        },
+        {
+          path: 'borrow-manage',
+          name: 'borrow-manage',
+          component: () => import('../views/admin/BorrowManage.vue'),
+        },
       ],
     },
     {
@@ -61,6 +83,11 @@ const router = createRouter({
       path:'/contact',
       name:'contact',
       component:()=>import('../views/Contact.vue'),
+    },
+    {
+      path:'/borrow',
+      name:'borrow',
+      component:()=>import('../views/Borrow.vue'),
     }
   ]
 })
@@ -69,8 +96,16 @@ const roleRouterMap={
   'home':READER_ROLEID,
   'center':READER_ROLEID,
   'contact':READER_ROLEID,
+  'borrow':READER_ROLEID,
+  'renew':READER_ROLEID,
   'reader-manage':ADMIN_ROLEID,
-  'college-manage':ADMIN_ROLEID
+  'reader-detail':ADMIN_ROLEID,
+  'college-manage':ADMIN_ROLEID,
+  'message-manage':ADMIN_ROLEID,
+  'message-detail':ADMIN_ROLEID,
+  'class-manage':ADMIN_ROLEID,
+  'borrow-manage':ADMIN_ROLEID,
+  'admin-manage':SUPER_ADMIN_ROLEID,
 }
 router.beforeEach((to, from, next) => {
   console.log(to,from,!localStorage.getItem('token'))

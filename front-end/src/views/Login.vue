@@ -28,7 +28,7 @@
           <el-option v-for="item in OPTIONS" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
-      <el-checkbox v-model="userInfo.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+      <!-- <el-checkbox v-model="userInfo.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox> -->
       <el-form-item style="width:100%;">
         <el-button :loading="loading" size="medium" type="primary" style="width:100%;"
           @click.native.prevent="handleLogin">
@@ -149,14 +149,13 @@ export default {
             }else{
               Cookies.set('token',res.token)
             }
-            
-            localStorage.setItem('roleId',this.userInfo.roleId)
+            const roleId=this.userInfo.roleId
+            localStorage.setItem('roleId',roleId)
             const fromPath = sessionStorage.getItem('fromPath');
-            const roleId = localStorage.getItem('roleId');
             const obj={
-              1:'/admin',
+              1:'/admin/admin-manage',
               2:'/',
-              3:'/admin',
+              3:'/admin/reader-manage',
             }
             let _fromPath=fromPath;
             if(fromPath==='/login'||!fromPath){

@@ -6,7 +6,7 @@
       </div>
       <div class="right">
         <div>{{roleName}}</div>
-        <div class="logout" >退出</div>
+        <div class="logout" @click="handleLogout">退出</div>
       </div>
     </div>
     <el-row class="main">
@@ -34,6 +34,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { SUPER_ADMIN_ROLEID, ADMIN_ROLEID } from '@/constant'
+import useLogout from '@/hooks/useLogout'
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
@@ -48,13 +49,9 @@ if (roleId == SUPER_ADMIN_ROLEID) {
     {
       index: 1,
       route: '/admin/admin-manage',
-      label: '管理员日志'
+      label: '管理员管理'
     },
-    {
-      index: 2,
-      route: '/admin/log-manage',
-      label: '登陆日志'
-    }
+ 
   ]
   roleName.value = '超级管理员'
 }
@@ -71,6 +68,26 @@ if (roleId == ADMIN_ROLEID) {
       route: '/admin/college-manage',
       label: '学院管理'
     },
+    {
+      index: 3,
+      route: '/admin/book-manage',
+      label: '图书管理'
+    },
+    {
+      index: 4,
+      route: '/admin/borrow-manage',
+      label: '借阅管理'
+    },
+    {
+      index: 5,
+      route: '/admin/class-manage',
+      label: '图书分类管理'
+    },
+    {
+      index: 6,
+      route: '/admin/message-manage',
+      label: '留言管理'
+    },
   ]
 
 }
@@ -83,6 +100,8 @@ menu.value.forEach(item=>{
     console.log(activeIndex.value,item)
   }
 })
+
+const handleLogout = useLogout();
 </script>
 
 <style>

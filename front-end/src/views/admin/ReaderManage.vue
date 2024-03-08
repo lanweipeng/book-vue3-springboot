@@ -1,17 +1,27 @@
 <template>
+   <el-form :inline="true" :model="formInline" class="demo-form-inline">
+    <el-form-item>
+      <el-input v-model="formInline.deptName" placeholder="学院名" clearable />
+    </el-form-item>
+    <el-form-item>
+      <el-input v-model="formInline.nickName" placeholder="姓名" clearable />
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="getReaderList">查询</el-button>
+      <el-button type="primary" @click="openClassDialogForm">添加</el-button>
+    </el-form-item>
+  </el-form>
   <el-table :data="tableData" style="width: 100%">
-    <el-table-column prop="message" label="留言" />
-    <el-table-column prop="recover" label="回复" />
-    <el-table-column label="状态" width="120" >
+    <el-table-column prop="phonenumber" label="手机号" />
+    <el-table-column prop="nickName" label="姓名" />
+    <el-table-column prop="userName" label="账号" />
+    <el-table-column prop="deptName" label="学院" />
+    <el-table-column fixed="right" label="操作" width="160">
       <template #default="scope">
-        <div style="color:#ccc" v-if="scope.row.status===0">未回</div>
-        <div  style="color:#67C23A" v-if="scope.row.status===1">已回</div>
-      </template>
-    </el-table-column>
-    <el-table-column prop="createTime" label="创建时间" width="200" />
-    <el-table-column fixed="right" label="操作" width="80">
-      <template #default="scope">
-        <el-button link type="danger" size="small" @click="handleClick(scope.row.leaveMessageId)"
+        <el-button link type="primary" size="small" @click="handleEdit(scope.row.userId)"
+          >编辑</el-button
+        >
+        <el-button link type="danger" size="small" @click="handleDelete(scope.row.userId)"
           >删除</el-button
         >
       </template>
@@ -22,10 +32,37 @@
 <script lang="ts" setup>
 import {getReaderListApi} from '@/api/reader'
 import { ElMessageBox } from 'element-plus';
-import {ref} from 'vue'
-const handleClick = async (id) => {
+import {ref,reactive} from 'vue'
+/**
+ * 搜索
+ */
+ const formInline = reactive({
+  deptName: '',
+  nickName: '',
+})
+/**
+ * 添加
+ */
+const openClassDialogForm = ()=>{
+  // dialogVisible.value = true
+}
+
+/**
+ * 表格
+ */
+const tableData=ref([])
+
+function getReaderList(){
+  getReaderListApi().then(res=>{
+  tableData.value=res.rows
+})
+}
+getReaderList()
+
+//删除
+ const handleDelete = async (id) => {
   await ElMessageBox.confirm(
-    '请确认是否删除该留言?',
+    '请确认是否删除该读者?',
     {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
@@ -35,47 +72,8 @@ const handleClick = async (id) => {
   await delMessageApi(id)
   ElMessageBox('删除成功！')
 }
-const tableData=ref([])
-getReaderListApi().then(res=>{
-  console.log(res)
-  tableData.value=res.data
-})
-const tableData2 = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-]
+//编辑
+const handleEdit=id=>{
+
+}
 </script>

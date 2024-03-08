@@ -80,6 +80,7 @@ service.interceptors.response.use(res => {
       if (!isRelogin.show) {
         ElMessage('登录状态已过期，请重新登录')
         setTimeout(() => {
+          sessionStorage.removeItem('formPath')
           location.href=location.origin+'/login'
         }, 1500);
         

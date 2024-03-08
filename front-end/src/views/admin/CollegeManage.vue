@@ -1,13 +1,6 @@
 <template>
   <el-table :data="tableData" style="width: 100%">
-    <el-table-column prop="message" label="留言" />
-    <el-table-column prop="recover" label="回复" />
-    <el-table-column label="状态" width="120" >
-      <template #default="scope">
-        <div style="color:#ccc" v-if="scope.row.status===0">未回</div>
-        <div  style="color:#67C23A" v-if="scope.row.status===1">已回</div>
-      </template>
-    </el-table-column>
+    <el-table-column prop="message" label="学院名" />
     <el-table-column prop="createTime" label="创建时间" width="200" />
     <el-table-column fixed="right" label="操作" width="80">
       <template #default="scope">

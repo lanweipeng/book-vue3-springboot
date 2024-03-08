@@ -1,7 +1,7 @@
 <template>
    <div class="header">
       <div class="left">
-        <h1 class="header-title">图书管理系统</h1>
+        <h1 class="header-title c-p" @click="handleClickLogo">图书管理系统</h1>
       <nav>
         <ul class="menu">
           <li v-for="item in menus" :key="item.name" @click="() => handleClick(item)">
@@ -19,24 +19,24 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import Cookies from 'js-cookie'
+import useLogout from '@/hooks/useLogout'
 import {ref} from 'vue'
 const menus = [
   {
     name: '图书推荐',
-    path: '/'
+    path: '/recommend'
   },
   {
     name: '图书借阅',
-    path: '/'
+    path: '/borrow'
   },
   {
     name: '图书归还',
-    path: '/'
+    path: '/return'
   },
   {
     name: '图书续借',
-    path: '/'
+    path: '/renew'
   },
   {
     name: '个人中心',
@@ -47,17 +47,16 @@ const menus = [
     path: '/contact'
   },
 ]
+const handleClickLogo=()=>{
+  router.push('/')
+}
 const router = useRouter()
 const isActive = ref();
 const handleClick = (item) => {
   isActive.value=item.name
   router.push(item.path)
 }
-const logout=()=>{
-  router.replace('/login')
-  localStorage.clear('roleId')
-  Cookies.clear('token')
-}
+const logout=useLogout()
 
 
 
