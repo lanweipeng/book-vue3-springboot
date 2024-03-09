@@ -1,7 +1,6 @@
 
 
 import request from '@/utils/request'
-import {addQuery} from '@/api/utils'
 
 // 读者列表
 export function getReaderListApi(params={}) {
@@ -11,10 +10,7 @@ export function getReaderListApi(params={}) {
   }=params;
 
   return request({
-    // url: `/system/role/selectUserRole?roleId=2&deptName=${deptName}&nickName=${nickName}`,
-    url:addQuery('/system/role/selectUserRole?roleId=2',{
-      deptName,nickName
-    }),
+    url: `/system/role/selectUserRole?roleId=3&deptName=${deptName}&nickName=${nickName}`,
     method: 'get',
     timeout: 20000
   })

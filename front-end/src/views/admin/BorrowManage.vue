@@ -55,7 +55,7 @@
     </el-table-column>
   <el-table-column fixed="right" label="操作" width="60">
     <template #default="scope">
-      <el-button link type="danger" size="small" @click="handleDelete(scope.row.categoryId)"
+      <el-button link type="danger" size="small" @click="handleDelete(scope.row.borrowId)"
         >删除</el-button
       >
     </template>

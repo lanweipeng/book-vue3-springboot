@@ -1,117 +1,93 @@
 <template>
-   <el-form :inline="true" :model="formInline" class="demo-form-inline">
+   <el-form :inline="true" :model="formInline" Book="demo-form-inline">
+    <el-form-item>
+      <el-input v-model="formInline.bookName" placeholder="书名" clearable />
+    </el-form-item>
     <el-form-item>
       <el-input v-model="formInline.categoryName" placeholder="分类名" clearable />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="getClassList">查询</el-button>
-      <el-button type="primary" @click="openClassDialogForm">添加</el-button>
+      <el-button type="primary" @click="getBookList">查询</el-button>
+      <el-button type="primary" @click="openBookDialogForm">添加</el-button>
     </el-form-item>
   </el-form>
  <el-table :data="tableData" style="width: 100%">
-   <el-table-column prop="categoryName" label="分类" />
-   <el-table-column prop="remark" label="备注"   width="100"/>
-   <el-table-column label="创建时间" width="200" >
+   <el-table-column prop="bookName" label="书名" />
+   <el-table-column prop="bookAuthor" label="作者"   width="100"/>
+   <el-table-column prop="bookId" label="书id"   width="100"/>
+   <el-table-column prop="bookInventory" label="库存"   width="100"/>
+   <el-table-column fixed="right" label="类名" width="200">
      <template #default="scope">
-       {{!scope.row.createTime?'-':moment(scope.row.createTime).format('yyyy-MM-DD hh:mm:ss')}}
+      {{scope.row.category.map(item=>item.categoryName).join('、')}}
      </template>
    </el-table-column>
-   <el-table-column label="更新时间" width="200" >
+   
+   <el-table-column fixed="right" label="操作" width="120">
      <template #default="scope">
-       {{!scope.row.updateTime?'-':moment(scope.row.updateTime).format('yyyy-MM-DD hh:mm:ss')}}
-     </template>
-   </el-table-column>
-   <el-table-column fixed="right" label="操作" width="60">
-     <template #default="scope">
-       <el-button link type="danger" size="small" @click="handleDelete(scope.row.categoryId)"
+      <el-button link type="primary" size="small" @click="handleEdit(scope.row.bookId)"
+         >编辑</el-button
+       >
+       <el-button link type="danger" size="small" @click="handleDelete(scope.row.bookId)"
          >删除</el-button
        >
      </template>
    </el-table-column>
  </el-table>
- <el-dialog
-    v-model="dialogVisible"
-    :title="title"
-    width="500"
-  >
-    <el-form :model="form" label-width="auto" style="max-width: 600px">
-      <el-form-item label="分类名">
-        <el-input v-model="form.categoryName" />
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="form.remark" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleAddClass">
-          确认
-        </el-button>
-      </div>
-    </template>
-  </el-dialog>
+
 </template>
 
 <script lang="ts" setup>
-import {getClassListApi,delClassApi,addClassApi} from '@/api/class'
+import {getBookListApi,delBookApi,addBookApi} from '@/api/admin/book'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {ref} from 'vue'
-import moment from 'moment'
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router';
 /**
  * 搜索
  */
 const formInline = reactive({
   categoryName: '',
+  bookName:''
 })
 /**
  * 添加
  */
-const openClassDialogForm = ()=>{
-  dialogVisible.value = true
+const router = useRouter()
+const openBookDialogForm = ()=>{
+  router.push(`/admin/book-detail`)
 }
 /**
  * 表格
  */
 const tableData=ref([])
-function getClassList(){
-  getClassListApi({categoryName:formInline.categoryName}).then(res=>{
+function getBookList(){
+  getBookListApi({categoryName:formInline.categoryName,bookName:formInline.bookName}).then(res=>{
  tableData.value=res.data
 })
 }
-getClassList();
+getBookList();
 
 /**
  * 删除
  */
 const handleDelete = async (id) => {
  await ElMessageBox.confirm(
-   '请确认是否删除该分类?',
+   '请确认是否删除?',
    {
      confirmButtonText: '确认',
      cancelButtonText: '取消',
      type: 'warning',
    }
  )
- await delClassApi(id)
+ await delBookApi(id)
  ElMessage.success('删除成功！')
- getClassList()
+ getBookList()
 }
 
 /**
- * dialog
+ * 编辑
  */
-const dialogVisible = ref(false)
-const title='添加分类'
-const form=reactive({categoryName:'', remark:''})
-const handleAddClass=async ()=>{
-  await addClassApi({
-    categoryName:form.categoryName,
-    remark:form.remark,
-  })
-  ElMessage.success('添加成功')
-  dialogVisible.value=false
-  getClassList()
+const handleEdit=id=>{
+  router.push(`/admin/book-detail?id=${id}`)
 }
 </script>

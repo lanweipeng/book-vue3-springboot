@@ -88,6 +88,11 @@ if (roleId == ADMIN_ROLEID) {
       route: '/admin/message-manage',
       label: '留言管理'
     },
+    {
+      index: 7,
+      route: '/admin/notice-manage',
+      label: '公告管理'
+    },
   ]
 
 }

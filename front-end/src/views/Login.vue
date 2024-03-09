@@ -150,6 +150,7 @@ export default {
               Cookies.set('token',res.token)
             }
             const roleId=this.userInfo.roleId
+            console.log(this.userInfo.roleId)
             localStorage.setItem('roleId',roleId)
             const fromPath = sessionStorage.getItem('fromPath');
             const obj={
@@ -159,6 +160,7 @@ export default {
             }
             let _fromPath=fromPath;
             if(fromPath==='/login'||!fromPath){
+              console.log(obj[roleId])
               _fromPath =obj[roleId]
             }
             console.log(_fromPath)

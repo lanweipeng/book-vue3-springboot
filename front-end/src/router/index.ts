@@ -28,7 +28,7 @@ const router = createRouter({
         {
           path: 'admin-manage',
           name: 'admin-manage',
-          component: () => import('../views/AdminManage.vue'),
+          component: () => import('../views/admin/AdminManage.vue'),
         },
         {
           path: 'reader-manage',
@@ -36,7 +36,7 @@ const router = createRouter({
           component: () => import('../views/admin/ReaderManage.vue'),
         },
         {
-          path: 'reader-detail',
+          path: 'reader-detail/:id',
           name: 'reader-detail',
           component: () => import('../views/admin/ReaderDetail.vue'),
         },
@@ -65,6 +65,27 @@ const router = createRouter({
           name: 'borrow-manage',
           component: () => import('../views/admin/BorrowManage.vue'),
         },
+        {
+          path: 'book-manage',
+          name: 'book-manage',
+          component: () => import('../views/admin/BookManage.vue'),
+        },
+        {
+          path: 'book-detail',
+          name: 'book-detail',
+          component: () => import('../views/admin/BookDetail.vue'),
+        },
+        {
+          path: 'notice-detail',
+          name: 'notice-detail',
+          component: () => import('../views/admin/NoticeDetail.vue'),
+        },
+        {
+          path: 'notice-manage',
+          name: 'notice-manage',
+          component: () => import('../views/admin/NoticeManage.vue'),
+        },
+        
       ],
     },
     {
@@ -105,6 +126,10 @@ const roleRouterMap={
   'message-detail':ADMIN_ROLEID,
   'class-manage':ADMIN_ROLEID,
   'borrow-manage':ADMIN_ROLEID,
+  'book-manage':ADMIN_ROLEID,
+  'notice-manage':ADMIN_ROLEID,
+  'notice-detail':ADMIN_ROLEID,
+  'book-detail':ADMIN_ROLEID,
   'admin-manage':SUPER_ADMIN_ROLEID,
 }
 router.beforeEach((to, from, next) => {

@@ -13,7 +13,7 @@ export function getBorrowListApi(params={}) {
 // 删除借阅
 export function delBorrowApi(id) {
   return request({
-    url: `/administrator/deleteCategory/${id}`,
+    url: `/administrator/deleteBorrowingRecord/${id}`,
     method: 'delete',
     timeout: 20000
   })

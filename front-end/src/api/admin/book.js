@@ -1,11 +1,16 @@
 
 import request from '@/utils/request'
-
+import {addQuery} from '@/api/utils'
 // 图书列表
+
 export function getBookListApi(params={}) {
-  const {bookName='',loanStatus=''} = params;
+  console.log(params)
+  const {bookName="",categoryName=""} = params;
   return request({
-    url: `/administrator/selectPersonalRecordsList?bookName=${bookName}&loanStatus=${loanStatus}`,
+    url: addQuery('/administrator/selectBook',{
+      bookName,categoryName,
+    }),
+    // url: `/administrator/selectBook?bookName=${bookName}&categoryName=${categoryName}`,
     method: 'get',
     timeout: 20000
   })
@@ -13,7 +18,7 @@ export function getBookListApi(params={}) {
 // 删除图书
 export function delBookApi(id) {
   return request({
-    url: `/administrator/deleteCategory/${id}`,
+    url: `/administrator/deleteBook/${id}`,
     method: 'delete',
     timeout: 20000
   })
@@ -27,13 +32,17 @@ export function getBookByIdApi(id) {
   })
 }
 //添加图书
-export function addBookApi({categoryName,remark}) {
-  console.log({addCategory:{categoryName,remark}})
+export function addBookApi(params) {
+  const {
+    bookName= '',
+  bookAuthor= '',
+  categoryIds=[],
+  bookIntroduce='',
+  bookCover=''
+  }=params
   return request({
-    url: `/administrator/addCategory`,
-    body:{
-      addCategory:{categoryName,remark}
-    },
+    url: `/administrator/addBook`,
+    data:{bookName,bookAuthor,categoryIds,bookIntroduce,bookCover},
     method: 'post',
     timeout: 20000
   })
