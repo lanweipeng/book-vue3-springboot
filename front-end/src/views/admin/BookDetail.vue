@@ -55,7 +55,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
-import { getBookByIdApi ,addBookApi} from '@/api/admin/book'
+import { getBookByIdApi ,addBookApi,editBookApi} from '@/api/admin/book'
 import {getClassListApi} from '@/api/class'
 import { ElMessage } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue'
@@ -64,6 +64,9 @@ import { getToken } from '@/utils/auth'
 const route = useRoute();
 const id = route.query.id
 const title=id?'编辑书籍':'新增书籍'
+/**
+ * 表单
+ */
 const form = reactive({
   bookName: '',
   bookAuthor: '',
@@ -71,11 +74,13 @@ const form = reactive({
   bookIntroduce:'',
   bookCover:''
 })
+//分类
 const options = ref([])
 getClassListApi().then(res=>{
   console.log(res)
   options.value=res.data
 })
+//图片
 const imageUrl = ref('')
 
 const handleAvatarSuccess = (
@@ -100,8 +105,13 @@ const beforeAvatarUpload = (rawFile) => {
 function getBookDetail() {
   if (id) {
     getBookByIdApi(id)
-      .then(res => {
-        console.log(res)
+      .then(({data}) => {
+        form.bookAuthor=data.bookAuthor;
+        form.bookCover=data.bookCover
+        form.bookIntroduce=data.bookIntroduce
+        form.categoryIds=data.category.map(item=>item.categoryId)
+        form.bookName=data.bookName
+        imageUrl.value=data.bookCover
       })
   }
 
@@ -115,8 +125,14 @@ if (form.recover) {
 
 
 const onSubmit = async () => {
- await addBookApi(form)
- ElMessage.success('新增成功')
+  if(id){
+    await editBookApi(({...form,bookId:id}))
+    ElMessage.success('编辑成功')
+  }else{
+    await addBookApi(form)
+    ElMessage.success('新增成功')
+  }
+
  router.back()
 }
 const router = useRouter();

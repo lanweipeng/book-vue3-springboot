@@ -14,8 +14,13 @@
  </el-form>
 <el-table :data="tableData" style="width: 100%">
   <el-table-column prop="bookName" label="书名" />
-  <el-table-column prop="bookAuthor" label="图书编号" width="120"/>
+  <el-table-column prop="bookId" label="图书编号" width="120"/>
   <el-table-column prop="bookAuthor" label="作者" width="80"/>
+  <el-table-column label="类名" width="200">
+    <template #default="scope">
+      {{ scope.row.category.map(item=>item.categoryName).join('、') }}
+    </template>
+  </el-table-column>
   <el-table-column prop="bookInventory" label="库存" width="80"/>
   <el-table-column fixed="right" label="操作" width="60">
     <template #default="scope">

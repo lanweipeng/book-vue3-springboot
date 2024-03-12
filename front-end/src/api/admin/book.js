@@ -26,7 +26,9 @@ export function delBookApi(id) {
 //获取图书
 export function getBookByIdApi(id) {
   return request({
-    url: `/administrator/deleteLeaveBook/${id}`,
+    url: addQuery('/home/selectBookById',{
+      bookId:id
+    }),
     method: 'get',
     timeout: 20000
   })
@@ -44,6 +46,23 @@ export function addBookApi(params) {
     url: `/administrator/addBook`,
     data:{bookName,bookAuthor,categoryIds,bookIntroduce,bookCover},
     method: 'post',
+    timeout: 20000
+  })
+}
+//编辑图书
+export function editBookApi(params) {
+  const {
+    bookName= '',
+  bookAuthor= '',
+  categoryIds=[],
+  bookIntroduce='',
+  bookCover='',
+  bookId=''
+  }=params
+  return request({
+    url: `/administrator/updateBook`,
+    data:{bookName,bookAuthor,categoryIds,bookIntroduce,bookCover,bookId},
+    method: 'put',
     timeout: 20000
   })
 }

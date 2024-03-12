@@ -68,7 +68,6 @@ export default {
     // const options = useRef([]);
     const router = useRouter()
     function goTo(path){
-      console.log(path)
       router.push(path)
     }
     return {
@@ -150,7 +149,6 @@ export default {
               Cookies.set('token',res.token)
             }
             const roleId=this.userInfo.roleId
-            console.log(this.userInfo.roleId)
             localStorage.setItem('roleId',roleId)
             const fromPath = sessionStorage.getItem('fromPath');
             const obj={
@@ -160,17 +158,17 @@ export default {
             }
             let _fromPath=fromPath;
             if(fromPath==='/login'||!fromPath){
-              console.log(obj[roleId])
               _fromPath =obj[roleId]
             }
-            console.log(_fromPath)
             this.goTo(_fromPath)
           })
           .catch(err=>{
-            console.log(err)
-            if(err.code===100001||err.code===100002){
+            if(err.code===100001||err.code===100002||err.code===500||err.code===100003){
               this.userInfo.code=null
               this.getCode();
+            }
+            if(err.code===100003){
+              this.userInfo.roleId=null
             }
           })
           .finally(()=>{

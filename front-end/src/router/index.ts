@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Cookies from 'js-cookie'
-import {SUPER_ADMIN_ROLEID,ADMIN_ROLEID,READER_ROLEID} from '@/constant'
+import { SUPER_ADMIN_ROLEID, ADMIN_ROLEID, READER_ROLEID } from '@/constant'
 
 
 const router = createRouter({
@@ -9,22 +9,22 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component:  () => import('../views/HomeView.vue'),
+      component: () => import('../views/HomeView.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component:  () => import('../views/Login.vue'),
+      component: () => import('../views/Login.vue'),
     },
     {
       path: '/admin',
       name: 'admin',
-      redirect:() => {
-        if(localStorage.getItem('roleId')===SUPER_ADMIN_ROLEID) return '/admin/admin-manage'
-        if(localStorage.getItem('roleId')===ADMIN_ROLEID) return '/admin/reader-manage'
+      redirect: () => {
+        if (localStorage.getItem('roleId') === SUPER_ADMIN_ROLEID) return '/admin/admin-manage'
+        if (localStorage.getItem('roleId') === ADMIN_ROLEID) return '/admin/reader-manage'
       },
       component: () => import('../views/Admin.vue'),
-      children:[
+      children: [
         {
           path: 'admin-manage',
           name: 'admin-manage',
@@ -85,61 +85,90 @@ const router = createRouter({
           name: 'notice-manage',
           component: () => import('../views/admin/NoticeManage.vue'),
         },
-        
+
       ],
     },
     {
-      path:'/center',
-      name:'center',
-      component:()=>import('../views/Center.vue'),
-      children:[
+      path: '/recommend',
+      name: 'recommend',
+      component: () => import('../views/BookRecommend.vue'),
+    },
+    {
+      path: '/recommend-detail',
+      name: 'recommend-detail',
+      component: () => import('../views/RecommendDetail.vue'),
+    },
+    {
+      path: '/center',
+      name: 'center',
+      component: () => import('../views/Center.vue'),
+      redirect: '/center/info',
+      children: [
         {
-          path:'message-list',
-          name:'message-list',
-          component:()=>import('../views/MessageList.vue'),
+          path: 'message-list',
+          name: 'message-list',
+          component: () => import('../views/MessageList.vue'),
+        },
+        {
+          path: 'info',
+          name: 'info',
+          component: () => import('../views/Info.vue'),
+        },
+        {
+          path:'borrow-info',
+          name:'borrow-info',
+          component: () => import('../views/BorrowInfo.vue'),
         }
       ]
     },
     {
-      path:'/contact',
-      name:'contact',
-      component:()=>import('../views/Contact.vue'),
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/Contact.vue'),
     },
     {
-      path:'/borrow',
-      name:'borrow',
-      component:()=>import('../views/Borrow.vue'),
-    }
+      path: '/borrow',
+      name: 'borrow',
+      component: () => import('../views/Borrow.vue'),
+    },
+    {
+      path: '/return',
+      name: 'return',
+      component: () => import('../views/Return.vue'),
+    },
+
   ]
 })
-const roleRouterMap={
-  'message-list':READER_ROLEID,
-  'home':READER_ROLEID,
-  'center':READER_ROLEID,
-  'contact':READER_ROLEID,
-  'borrow':READER_ROLEID,
-  'renew':READER_ROLEID,
-  'reader-manage':ADMIN_ROLEID,
-  'reader-detail':ADMIN_ROLEID,
-  'college-manage':ADMIN_ROLEID,
-  'message-manage':ADMIN_ROLEID,
-  'message-detail':ADMIN_ROLEID,
-  'class-manage':ADMIN_ROLEID,
-  'borrow-manage':ADMIN_ROLEID,
-  'book-manage':ADMIN_ROLEID,
-  'notice-manage':ADMIN_ROLEID,
-  'notice-detail':ADMIN_ROLEID,
-  'book-detail':ADMIN_ROLEID,
-  'admin-manage':SUPER_ADMIN_ROLEID,
+const roleRouterMap = {
+  'message-list': READER_ROLEID,
+  'home': READER_ROLEID,
+  'center': READER_ROLEID,
+  'contact': READER_ROLEID,
+  'borrow': READER_ROLEID,
+  'renew': READER_ROLEID,
+  'info': READER_ROLEID,
+  'recommend': READER_ROLEID,
+  'recommend-detail': READER_ROLEID,
+  'return': READER_ROLEID,
+  'borrow-info': READER_ROLEID,
+  'reader-manage': ADMIN_ROLEID,
+  'reader-detail': ADMIN_ROLEID,
+  'college-manage': ADMIN_ROLEID,
+  'message-manage': ADMIN_ROLEID,
+  'message-detail': ADMIN_ROLEID,
+  'class-manage': ADMIN_ROLEID,
+  'borrow-manage': ADMIN_ROLEID,
+  'book-manage': ADMIN_ROLEID,
+  'notice-manage': ADMIN_ROLEID,
+  'notice-detail': ADMIN_ROLEID,
+  'book-detail': ADMIN_ROLEID,
+  'admin-manage': SUPER_ADMIN_ROLEID,
 }
 router.beforeEach((to, from, next) => {
-  console.log(to,from,!localStorage.getItem('token'))
-console.log(to.path!=='/login',!Cookies.get('token'),localStorage.getItem('roleId')!=roleRouterMap[to.name])
-  if(to.path!=='/login'&&(!Cookies.get('token')||localStorage.getItem('roleId')!=roleRouterMap[to.name])){
-      sessionStorage.setItem('fromPath',from.path)
-    next({name:'login'})
-
-  }else{
+  if (to.path !== '/login' && (!Cookies.get('token') || localStorage.getItem('roleId') != roleRouterMap[to.name])) {
+    sessionStorage.setItem('fromPath', from.path)
+    next({ name: 'login' })
+  } else {
     next()
   }
 

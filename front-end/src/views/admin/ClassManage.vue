@@ -21,8 +21,10 @@
        {{!scope.row.updateTime?'-':moment(scope.row.updateTime).format('yyyy-MM-DD hh:mm:ss')}}
      </template>
    </el-table-column>
-   <el-table-column fixed="right" label="操作" width="60">
+   <el-table-column fixed="right" label="操作" width="160">
      <template #default="scope">
+      <el-button link type="primary" size="small" @click="handleEdit(scope.row)"
+         >编辑</el-button>
        <el-button link type="danger" size="small" @click="handleDelete(scope.row.categoryId)"
          >删除</el-button
        >
@@ -45,7 +47,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleAddClass">
+        <el-button type="primary" @click="handleSubmit">
           确认
         </el-button>
       </div>
@@ -54,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import {getClassListApi,delClassApi,addClassApi} from '@/api/class'
+import {getClassListApi,delClassApi,addClassApi,ediClassApi} from '@/api/class'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {ref} from 'vue'
 import moment from 'moment'
@@ -81,7 +83,15 @@ function getClassList(){
 })
 }
 getClassList();
-
+/**
+ * 编辑
+ */
+function handleEdit(row){
+  form.categoryId = row.categoryId
+  form.categoryName=row.categoryName
+  form.remark=row.remark
+  dialogVisible.value=true
+}
 /**
  * 删除
  */
@@ -104,13 +114,35 @@ const handleDelete = async (id) => {
  */
 const dialogVisible = ref(false)
 const title='添加分类'
-const form=reactive({categoryName:'', remark:''})
+const form=reactive({categoryName:'', remark:'',categoryId:''})
+const handleSubmit=()=>{
+  if(form.categoryId){
+    handleEditClass()
+  }else{
+    handleAddClass();
+  }
+}
 const handleAddClass=async ()=>{
   await addClassApi({
     categoryName:form.categoryName,
     remark:form.remark,
   })
+  form.categoryName=''
+  form.remark=''
   ElMessage.success('添加成功')
+  dialogVisible.value=false
+  getClassList()
+}
+const handleEditClass=async ()=>{
+  await ediClassApi({
+    categoryId:form.categoryId,
+    categoryName:form.categoryName,
+    remark:form.remark,
+  })
+  form.categoryId=''
+  form.categoryName=''
+  form.remark=''
+  ElMessage.success('编辑成功')
   dialogVisible.value=false
   getClassList()
 }

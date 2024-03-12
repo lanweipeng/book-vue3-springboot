@@ -1,6 +1,6 @@
 
 import request from '@/utils/request'
-
+import {addQuery} from '@/api/utils'
 // 公告列表
 export function getNoticeListApi() {
   return request({
@@ -20,7 +20,9 @@ export function delNoticeApi(id) {
 //获取公告
 export function getNoticeByIdApi(id) {
   return request({
-    url: `/administrator/deleteLeaveNotice/${id}`,
+    url:addQuery('/home/selectReAnnouncementById',{
+      announcementId:id
+    }),
     method: 'get',
     timeout: 20000
   })
@@ -33,6 +35,18 @@ export function addNoticeApi({address,content}) {
       address,content
     },
     method: 'post',
+    timeout: 20000
+  })
+}
+
+//添加公告
+export function editNoticeApi({address,content,announcementId}) {
+  return request({
+    url: `/home/updateReAnnouncement`,
+    data:{
+      address,content,announcementId
+    },
+    method: 'put',
     timeout: 20000
   })
 }

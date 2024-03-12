@@ -5,7 +5,7 @@
       <nav>
         <ul class="menu">
           <li v-for="item in menus" :key="item.name" @click="() => handleClick(item)">
-          <div :class="{'is-active':isActive===item.name}">{{ item.name }}</div>
+          <div :class="{'is-active':isActive===item.name}">{{ item.label }}</div>
           </li>
 
         </ul>
@@ -18,40 +18,51 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import useLogout from '@/hooks/useLogout'
 import {ref} from 'vue'
 const menus = [
   {
-    name: '图书推荐',
-    path: '/recommend'
+    label: '图书推荐',
+    name: 'recommend',
+    path: '/recommend',
   },
   {
-    name: '图书借阅',
+    label: '图书借阅',
+    name: 'borrow',
     path: '/borrow'
   },
   {
-    name: '图书归还',
-    path: '/return'
+    label: '图书归还',
+    path: '/return',
+    name: 'return',
   },
   {
-    name: '图书续借',
-    path: '/renew'
+    label: '图书续借',
+    path: '/renew',
+    name: 'renew',
   },
   {
-    name: '个人中心',
-    path: '/center'
+    label: '个人中心',
+    path: '/center',
+    name: 'center',
   },
   {
-    name: '联系管理员',
-    path: '/contact'
+    label: '联系管理员',
+    path: '/contact',
+    name: 'contact',
   },
 ]
+const isActive = ref();
+const route = useRoute();
+console.log(route.name)
+isActive.value=route.name
+console.log(isActive.value,route.name)
 const handleClickLogo=()=>{
   router.push('/')
 }
 const router = useRouter()
-const isActive = ref();
+
 const handleClick = (item) => {
   isActive.value=item.name
   router.push(item.path)

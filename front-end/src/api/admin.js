@@ -1,16 +1,18 @@
 
 
 import request from '@/utils/request'
-
-// 读者列表
-export function getReaderListApi(params={}) {
+import {addQuery} from '@/api/utils'
+// 管理员列表
+export function getAdminListApi(params={}) {
   const {
     deptName='',
     nickName='',
   }=params;
 
   return request({
-    url: `/system/role/selectUserRole?roleId=3&deptName=${deptName}&nickName=${nickName}`,
+    url:addQuery('/system/role/selectUserRole?roleId=3',{
+      deptName,nickName
+    }),
     method: 'get',
     timeout: 20000
   })

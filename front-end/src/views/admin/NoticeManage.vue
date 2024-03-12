@@ -1,22 +1,27 @@
 <template>
    <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item>
-      <el-input v-model="formInline.categoryName" placeholder="分类名" clearable />
-    </el-form-item>
-    <el-form-item>
       <el-button type="primary" @click="getNoticeList">查询</el-button>
       <el-button type="primary" @click="handleAddNotice">添加</el-button>
     </el-form-item>
   </el-form>
  <el-table :data="tableData" style="width: 100%">
    <el-table-column prop="content" label="内容" />
+   <el-table-column label="图片" width="200" >
+     <template #default="scope">
+      <img :src="scope.row.address" style="height:60px;width:80px" />
+     </template>
+   </el-table-column>
    <el-table-column label="创建时间" width="200" >
      <template #default="scope">
        {{!scope.row.createTime?'-':moment(scope.row.createTime).format('yyyy-MM-DD hh:mm:ss')}}
      </template>
    </el-table-column>
-   <el-table-column fixed="right" label="操作" width="60">
+   <el-table-column fixed="right" label="操作" width="160">
      <template #default="scope">
+      <el-button link type="primary" size="small" @click="handleEdit(scope.row.announcementId)"
+         >编辑</el-button
+       >
        <el-button link type="danger" size="small" @click="handleDelete(scope.row.announcementId)"
          >删除</el-button
        >
@@ -77,7 +82,13 @@ function getNoticeList(){
 })
 }
 getNoticeList();
+/**
+ * 编辑
+ */
+const handleEdit=(id)=>{
+  router.push('/admin/notice-detail?id='+id)
 
+}
 /**
  * 删除
  */

@@ -12,7 +12,7 @@
         @close="handleClose"
         router
       >
-        <el-menu-item index="1" route="/center/edit-info">
+        <el-menu-item index="1" route="/center/info">
             <span>资料编辑</span>
         </el-menu-item>
         <el-menu-item index="2" route="/center/borrow-info">

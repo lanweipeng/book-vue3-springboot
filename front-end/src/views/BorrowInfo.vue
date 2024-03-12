@@ -1,10 +1,13 @@
 <template>
    <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item>
+      <el-input v-model="formInline.deptName" placeholder="学院名" clearable />
+    </el-form-item>
+    <el-form-item>
       <el-input v-model="formInline.nickName" placeholder="姓名" clearable />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="getAdminList">查询</el-button>
+      <el-button type="primary" @click="getReaderList">查询</el-button>
       <el-button type="primary" @click="openClassDialogForm">添加</el-button>
     </el-form-item>
   </el-form>
@@ -12,6 +15,7 @@
     <el-table-column prop="phonenumber" label="手机号" />
     <el-table-column prop="nickName" label="姓名" />
     <el-table-column prop="userName" label="账号" />
+    <el-table-column prop="deptName" label="学院" />
     <el-table-column fixed="right" label="操作" width="160">
       <template #default="scope">
         <el-button link type="primary" size="small" @click="handleEdit(scope.row.userId)"
@@ -26,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import {getAdminListApi} from '@/api/admin'
+import {getBorrowListApi} from '@/api/my/borrow'
 import { ElMessageBox } from 'element-plus';
 import {ref,reactive} from 'vue'
 /**
@@ -48,12 +52,12 @@ const openClassDialogForm = ()=>{
  */
 const tableData=ref([])
 
-function getAdminList(){
-  getAdminListApi().then(res=>{
+function getReaderList(){
+  getBorrowListApi().then(res=>{
   tableData.value=res.rows
 })
 }
-getAdminList()
+getReaderList()
 
 //删除
  const handleDelete = async (id) => {

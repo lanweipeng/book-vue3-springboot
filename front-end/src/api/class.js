@@ -37,4 +37,15 @@ export function addClassApi({categoryName,remark}) {
     timeout: 20000
   })
 }
+//编辑分类
+export function ediClassApi({categoryName,remark,categoryId}) {
+  return request({
+    url: `/administrator/updateCategory`,
+    data:{
+      categoryName,remark,categoryId
+    },
+    method: 'put',
+    timeout: 20000
+  })
+}
 

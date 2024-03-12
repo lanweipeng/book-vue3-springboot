@@ -11,7 +11,6 @@ export function getReaderListApi(params={}) {
   }=params;
 
   return request({
-    // url: `/system/role/selectUserRole?roleId=2&deptName=${deptName}&nickName=${nickName}`,
     url:addQuery('/system/role/selectUserRole?roleId=2',{
       deptName,nickName
     }),

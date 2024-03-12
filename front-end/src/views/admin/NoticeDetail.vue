@@ -1,5 +1,5 @@
 <template>
-  <h2>新增公告</h2>
+  <h2>{{ title }}</h2>
   <hr>
   <div class="main">
     <el-form :model="form" label-width="auto" style="max-width: 400px">
@@ -33,16 +33,17 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
-import { getNoticeByIdApi ,addNoticeApi} from '@/api/notice'
+import { getNoticeByIdApi ,addNoticeApi, editNoticeApi} from '@/api/notice'
 import {getClassListApi} from '@/api/class'
 import { ElMessage } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue'
 import { getToken } from '@/utils/auth'
 
 const route = useRoute();
-const id = route.params.id
+const id = route.query.id
+const title=id?'编辑公告':'新增公告'
 const form = reactive({
-  address:'',content:''
+  address:'',content:'',announcementId:''
 })
 const options = ref([])
 getClassListApi().then(res=>{
@@ -73,8 +74,11 @@ const beforeAvatarUpload = (rawFile) => {
 function getNoticeDetail() {
   if (id) {
     getNoticeByIdApi(id)
-      .then(res => {
-        console.log(res)
+      .then(({data}) => {
+        form.content = data.content
+        form.address = data.address
+        form.announcementId = data.announcementId
+        imageUrl.value=data.address
       })
   }
 
@@ -85,8 +89,14 @@ getNoticeDetail()
 
 
 const onSubmit = async () => {
-  await addNoticeApi(form)
+  if(id){
+    await editNoticeApi(form)
+  ElMessage.success('编辑成功')
+  }else{
+    await addNoticeApi(form)
   ElMessage.success('新增成功')
+  }
+ 
   router.back()
 }
 const router = useRouter();
