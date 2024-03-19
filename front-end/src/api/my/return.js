@@ -7,7 +7,7 @@ export function returnBookApi(params={}) {
   console.log(bookId)
   return request({
     // url: `/personage/selectPersonalRecords?bookName=${bookName}`,
-    url:addQuery('/borrow/returnBorrowBook',{
+    url:addQuery('/borrow/returnBorrowByBookId',{
       bookId
     }),
     // url:'/borrow/returnBorrowBook',

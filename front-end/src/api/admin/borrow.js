@@ -38,4 +38,14 @@ export function addBorrowApi({categoryName,remark}) {
     timeout: 20000
   })
 }
+export function returnBookApi(id) {
+  return request({
+    url: `/borrow/returnBorrowBook`,
+    data:{
+      borrowId:id
+    },
+    method: 'put',
+    timeout: 20000
+  })
+}
 

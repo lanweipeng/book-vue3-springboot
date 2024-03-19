@@ -31,12 +31,17 @@ const router = createRouter({
           component: () => import('../views/admin/AdminManage.vue'),
         },
         {
+          path: 'admin-detail',
+          name: 'admin-detail',
+          component: () => import('../views/admin/AdminDetail.vue'),
+        },
+        {
           path: 'reader-manage',
           name: 'reader-manage',
           component: () => import('../views/admin/ReaderManage.vue'),
         },
         {
-          path: 'reader-detail/:id',
+          path: 'reader-detail',
           name: 'reader-detail',
           component: () => import('../views/admin/ReaderDetail.vue'),
         },
@@ -136,7 +141,11 @@ const router = createRouter({
       name: 'return',
       component: () => import('../views/Return.vue'),
     },
-
+    {
+      path: '/renew',
+      name: 'renew',
+      component: () => import('../views/Renew.vue'),
+    },
   ]
 })
 const roleRouterMap = {
@@ -163,6 +172,7 @@ const roleRouterMap = {
   'notice-detail': ADMIN_ROLEID,
   'book-detail': ADMIN_ROLEID,
   'admin-manage': SUPER_ADMIN_ROLEID,
+  'admin-detail': SUPER_ADMIN_ROLEID,
 }
 router.beforeEach((to, from, next) => {
   if (to.path !== '/login' && (!Cookies.get('token') || localStorage.getItem('roleId') != roleRouterMap[to.name])) {

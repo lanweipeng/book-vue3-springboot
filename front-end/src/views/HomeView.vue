@@ -2,7 +2,7 @@
   <div class="home">
     <Header />
     <main>
-      <div class="banner">
+      <div class="banner" v-if="banners.length>0">
         <ul>
           <li v-for="(item,i) in banners" :key="item.announcementId" :class="{show:i===index}">
             <!-- <div v-if="i===1"> -->

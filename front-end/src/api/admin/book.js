@@ -40,11 +40,12 @@ export function addBookApi(params) {
   bookAuthor= '',
   categoryIds=[],
   bookIntroduce='',
-  bookCover=''
+  bookCover='',
+  bookInventory=''
   }=params
   return request({
     url: `/administrator/addBook`,
-    data:{bookName,bookAuthor,categoryIds,bookIntroduce,bookCover},
+    data:{bookName,bookAuthor,categoryIds,bookIntroduce,bookCover,bookInventory},
     method: 'post',
     timeout: 20000
   })
@@ -57,11 +58,12 @@ export function editBookApi(params) {
   categoryIds=[],
   bookIntroduce='',
   bookCover='',
-  bookId=''
+  bookId='',
+  bookInventory=''
   }=params
   return request({
     url: `/administrator/updateBook`,
-    data:{bookName,bookAuthor,categoryIds,bookIntroduce,bookCover,bookId},
+    data:{bookName,bookAuthor,categoryIds,bookIntroduce,bookCover,bookId,bookInventory},
     method: 'put',
     timeout: 20000
   })

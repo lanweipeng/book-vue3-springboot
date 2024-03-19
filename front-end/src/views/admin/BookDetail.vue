@@ -9,6 +9,9 @@
     <el-form-item label="作者">
       <el-input type="text" v-model="form.bookAuthor" />
     </el-form-item>
+    <el-form-item label="库存">
+      <el-input type="text" v-model="form.bookInventory" />
+    </el-form-item>
     <el-form-item label="类别">
       <el-select
       v-model="form.categoryIds"
@@ -72,7 +75,8 @@ const form = reactive({
   bookAuthor: '',
   categoryIds:[],
   bookIntroduce:'',
-  bookCover:''
+  bookCover:'',
+  bookInventory:''
 })
 //分类
 const options = ref([])
@@ -111,6 +115,7 @@ function getBookDetail() {
         form.bookIntroduce=data.bookIntroduce
         form.categoryIds=data.category.map(item=>item.categoryId)
         form.bookName=data.bookName
+        form.bookInventory = data.bookInventory
         imageUrl.value=data.bookCover
       })
   }

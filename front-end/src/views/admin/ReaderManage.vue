@@ -30,9 +30,10 @@
 </template>
 
 <script lang="ts" setup>
-import {getReaderListApi} from '@/api/reader'
-import { ElMessageBox } from 'element-plus';
+import {getReaderListApi,delReaderApi} from '@/api/reader'
+import { ElMessage, ElMessageBox } from 'element-plus';
 import {ref,reactive} from 'vue'
+import { useRouter } from 'vue-router';
 /**
  * 搜索
  */
@@ -43,8 +44,9 @@ import {ref,reactive} from 'vue'
 /**
  * 添加
  */
+const router = useRouter()
 const openClassDialogForm = ()=>{
-  // dialogVisible.value = true
+  router.push('/admin/reader-detail')
 }
 
 /**
@@ -69,11 +71,13 @@ getReaderList()
       type: 'warning',
     }
   )
-  await delMessageApi(id)
-  ElMessageBox('删除成功！')
+  await delReaderApi(id)
+  ElMessage.success('删除成功！')
+  getReaderList()
 }
 //编辑
 const handleEdit=id=>{
+  router.push(`/admin/reader-detail?id=${id}`)
 
 }
 </script>

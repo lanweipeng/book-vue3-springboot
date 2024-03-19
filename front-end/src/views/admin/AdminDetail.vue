@@ -14,20 +14,15 @@
       <el-form-item label="手机号">
         <el-input type="text" rows="6" v-model="form.phonenumber" />
       </el-form-item>
-      <el-form-item label="学院">
-        <el-select v-model="form.deptId" placeholder="请选择学院" clearable>
-          <el-option v-for="item in collegeList" :key="item.deptId" :label="item.deptName" :value="item.deptId" />
-        </el-select>
-      </el-form-item>
       <div v-if="id">修改密码：<el-switch v-model="editPassword" /> </div>
-      <el-form-item v-if="editPassword" label="密码">
-        <el-input rows="6" v-model="form.password" type="password" show-password />
-      </el-form-item>
-      <el-form-item v-if="editPassword" label="确认密码">
-        <el-input rows="6" v-model="form.confirmPassword" type="password" show-password />
-      </el-form-item>
-
-
+        <el-form-item v-if="editPassword" label="密码">
+          <el-input rows="6" v-model="form.password" type="password" show-password />
+        </el-form-item>
+        <el-form-item v-if="editPassword" label="确认密码">
+          <el-input rows="6" v-model="form.confirmPassword" type="password" show-password />
+        </el-form-item>
+     
+     
 
 
       <el-form-item>
@@ -41,41 +36,35 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
-import { getReaderByIdApi, addReaderApi, editReaderApi } from '@/api/reader'
-import { getAllCollegeListApi } from '@/api/college'
+import { getUserByIdApi ,addAdminApi, editAdminApi} from '@/api/admin'
 import { ElMessage } from 'element-plus';
 const route = useRoute()
 const id = route.query.id
-const title = id ? '编辑读者' : '新增读者'
+const title = id ? '编辑管理员' : '新增管理员'
 const form = reactive({
   nickName: '',
   confirmPassword: '',
   password: '',
   userName: '',
-  phonenumber: '',
-  deptId: ''
+  phonenumber: ''
 })
 
 const editPassword = ref(true)
-if (id) {
+if(id){
   editPassword.value = false
 }
-const collegeList = ref([])
-getAllCollegeListApi()
-  .then(res => {
-    collegeList.value = res.data
-  })
+
+
 
 
 function getInfoDetail() {
-  getReaderByIdApi(id)
+  getUserByIdApi(id)
     .then(({ data }) => {
       form.nickName = data.nickName
       form.confirmPassword = data.confirmPassword
       form.password = data.password
       form.userName = data.userName
       form.phonenumber = data.phonenumber
-      form.deptId = data.deptId
     })
 }
 id && getInfoDetail()
@@ -88,11 +77,7 @@ const onSubmit = async () => {
     nickName: form.nickName,
     password: form.password,
     userName: form.userName,
-    phonenumber: form.phonenumber,
-    deptId: form.deptId
-  }
-  if(id){
-    obj.userId=id
+    phonenumber: form.phonenumber
   }
   if (editPassword.value) {
     if (form.password === form.confirmPassword) {
@@ -102,16 +87,16 @@ const onSubmit = async () => {
       return
     }
   }
-  if (id) {
-    await editReaderApi(obj)
-    ElMessage.success('编辑成功')
-  } else {
-    await addReaderApi(obj)
-    ElMessage.success('新增成功')
+  if(id){
+    await editAdminApi({...obj,userId:id})
+  ElMessage.success('编辑成功')
+  }else{
+    await addAdminApi(obj)
+  ElMessage.success('新增成功')
 
   }
 
-  router.push('/admin/reader-manage')
+  router.back()
 }
 const router = useRouter();
 const handleBack = () => {

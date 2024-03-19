@@ -17,11 +17,8 @@
     width="500"
   >
     <el-form :model="form" label-width="auto" style="max-width: 600px">
-      <el-form-item label="分类名">
-        <el-input v-model="form.categoryName" />
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="form.remark" />
+      <el-form-item label="学院名">
+        <el-input v-model="form.deptName" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -36,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import {getCollegeListApi,delMessageApi} from '@/api/college'
+import {getCollegeListApi,delCollegeApi,addCollegeApi} from '@/api/college'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {ref,reactive} from 'vue'
 
@@ -55,8 +52,8 @@ const handleClick = async (id) => {
       type: 'warning',
     }
   )
-  await delMessageApi(id)
-  ElMessageBox('删除成功！')
+  await delCollegeApi(id)
+  ElMessage.success('删除成功！')
 }
 const tableData=ref([])
 function getCollegeList(){
@@ -70,12 +67,11 @@ getCollegeList();
  * dialog
  */
  const dialogVisible = ref(false)
-const title='添加分类'
-const form=reactive({categoryName:'', remark:''})
+const title='添加学院'
+const form=reactive({deptName:'', remark:''})
 const handleAddClass=async ()=>{
-  await addClassApi({
-    categoryName:form.categoryName,
-    remark:form.remark,
+  await addCollegeApi({
+    deptName:form.deptName,
   })
   ElMessage.success('添加成功')
   dialogVisible.value=false

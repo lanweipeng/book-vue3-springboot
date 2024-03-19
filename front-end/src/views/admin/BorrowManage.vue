@@ -45,17 +45,15 @@
         <div style="color:#409EFF" v-if="scope.row.loanStatus===0">借阅中</div>
         <div  style="color:#67C23A" v-if="scope.row.loanStatus===1">已归还</div>
         <div  style="color:#F56C6C" v-if="scope.row.loanStatus===2">未归还</div>
+        <div  style="color:#409EFF" v-if="scope.row.loanStatus===3">续借中</div>
       </template>
     </el-table-column>
-    <el-table-column label="续借状态" width="120" >
-      <template #default="scope">
-        <div style="color:#ccc" v-if="scope.row.renewalStatus===0">否</div>
-        <div  style="color:#67C23A" v-if="scope.row.renewalStatus===1">是</div>
-      </template>
-    </el-table-column>
-  <el-table-column fixed="right" label="操作" width="60">
+  <el-table-column fixed="right" label="操作" width="160">
     <template #default="scope">
-      <el-button link type="danger" size="small" @click="handleDelete(scope.row.borrowId)"
+      <el-button link type="primary" :disabled="scope.row.loanStatus===1" size="small" @click="handleReturn(scope.row.borrowId)"
+        >归还</el-button
+      >
+      <el-button link type="danger"  :disabled="scope.row.loanStatus!==1" size="small" @click="handleDelete(scope.row.borrowId)"
         >删除</el-button
       >
     </template>
@@ -86,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import {getBorrowListApi,delBorrowApi,addBorrowApi} from '@/api/admin/borrow'
+import {getBorrowListApi,delBorrowApi,addBorrowApi, returnBookApi} from '@/api/admin/borrow'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {ref} from 'vue'
 import moment from 'moment'
@@ -102,6 +100,7 @@ const options=[
   {value:0,label:'借阅中'},
   {value:1,label:'已归还'},
   {value:2,label:'未归还'},
+  {value:3,label:'续借中'},
 ]
 /**
 * 添加
@@ -125,7 +124,7 @@ getBorrowList();
 */
 const handleDelete = async (id) => {
 await ElMessageBox.confirm(
-  '请确认是否删除该分类?',
+  '请确认是否删除该借阅记录?',
   {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
@@ -136,7 +135,22 @@ await delBorrowApi(id)
 ElMessage.success('删除成功！')
 getBorrowList()
 }
-
+/**
+ * 归还
+ */
+ const handleReturn =async id=>{
+  await ElMessageBox.confirm(
+  '请确认是否归还该书籍?',
+  {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }
+)
+  await returnBookApi(id)
+  ElMessage.success('归还成功！')
+  getBorrowList()
+}
 /**
 * dialog
 */

@@ -5,7 +5,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="getAdminList">查询</el-button>
-      <el-button type="primary" @click="openClassDialogForm">添加</el-button>
+      <el-button type="primary" @click="handleAddAdmin">添加</el-button>
     </el-form-item>
   </el-form>
   <el-table :data="tableData" style="width: 100%">
@@ -27,8 +27,10 @@
 
 <script lang="ts" setup>
 import {getAdminListApi} from '@/api/admin'
-import { ElMessageBox } from 'element-plus';
+import {delReaderApi} from '@/api/reader'
+import { ElMessage, ElMessageBox } from 'element-plus';
 import {ref,reactive} from 'vue'
+import { useRouter } from 'vue-router';
 /**
  * 搜索
  */
@@ -39,8 +41,9 @@ import {ref,reactive} from 'vue'
 /**
  * 添加
  */
-const openClassDialogForm = ()=>{
-  // dialogVisible.value = true
+const router = useRouter();
+const handleAddAdmin = ()=>{
+  router.push('admin-detail')
 }
 
 /**
@@ -49,7 +52,7 @@ const openClassDialogForm = ()=>{
 const tableData=ref([])
 
 function getAdminList(){
-  getAdminListApi().then(res=>{
+  getAdminListApi({nickName:formInline.nickName}).then(res=>{
   tableData.value=res.rows
 })
 }
@@ -58,18 +61,20 @@ getAdminList()
 //删除
  const handleDelete = async (id) => {
   await ElMessageBox.confirm(
-    '请确认是否删除该读者?',
+    '请确认是否删除该管理员?',
     {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
       type: 'warning',
     }
   )
-  await delMessageApi(id)
-  ElMessageBox('删除成功！')
+  await delReaderApi(id)
+  ElMessage.success('删除成功！')
+  getAdminList()
+
 }
 //编辑
 const handleEdit=id=>{
-
+  router.push('/admin/admin-detail?id='+id)
 }
 </script>

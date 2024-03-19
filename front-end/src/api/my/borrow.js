@@ -3,11 +3,11 @@ import request from '@/utils/request'
 import {addQuery} from '@/api/utils'
 // 借阅列表
 export function getBorrowListApi(params={}) {
-  const {bookName=''} = params;
+  const {bookName='',loanStatus=''} = params;
   return request({
     // url: `/personage/selectPersonalRecords?bookName=${bookName}`,
     url:addQuery('/personage/selectPersonalRecords',{
-      bookName
+      bookName,loanStatus
     }),
     method: 'get',
     timeout: 20000
@@ -29,16 +29,36 @@ export function getBorrowByIdApi(id) {
     timeout: 20000
   })
 }
-//添加借阅
-export function addBorrowApi({categoryName,remark}) {
-  console.log({addCategory:{categoryName,remark}})
+
+//归还书籍
+export function returnBookApi({borrowId}) {
   return request({
-    url: `/administrator/addCategory`,
-    body:{
-      addCategory:{categoryName,remark}
+    url: `/borrow/returnBorrowBook`,
+    data:{
+      borrowId
     },
-    method: 'post',
+    method: 'put',
     timeout: 20000
   })
 }
-
+export function returnBookByIdApi({borrowId}) {
+  return request({
+    url: `/borrow/returnBorrowByBookId`,
+    data:{
+      borrowId
+    },
+    method: 'put',
+    timeout: 20000
+  })
+}
+//续借
+export function returnRenewByIdApi({borrowId}) {
+  return request({
+    url: `/borrow/renewBorrowBook`,
+    data:{
+      borrowId
+    },
+    method: 'put',
+    timeout: 20000
+  })
+}

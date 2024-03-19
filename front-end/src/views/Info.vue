@@ -67,27 +67,28 @@ getInfoDetail()
 const onSubmit = async () => {
   const obj={
     nickName:form.nickName,
-  password: form.password,
+  password: form.password||'',
   userName: form.userName,
-  phonenumber: form.phonenumber
+  phonenumber: form.phonenumber,
   }
   if(editPassword.value){
     if(form.password===form.confirmPassword){
       obj.password=form.password
     }else{
       ElMessage('两次输入密码不一致')
+      return
     }
   }
+  console.log(obj)
   await editInfoApi(obj)
   ElMessage.success('编辑成功')
-  router.back()
+  getInfoDetail()
 }
 const router = useRouter();
 const handleBack = () => {
   router.back()
 }
 
-const pre = location.origin
 </script>
 
 <style scoped lang="scss">
