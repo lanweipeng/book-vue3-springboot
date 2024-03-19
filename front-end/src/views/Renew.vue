@@ -14,7 +14,7 @@
         />
     </el-form-item>
     <el-form-item>
-      <el-button  type="primary" @click="onSubmit">归还</el-button>
+      <el-button  type="primary" @click="onSubmit">续借</el-button>
     </el-form-item>
   </el-form>
   </main>
